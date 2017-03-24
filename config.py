@@ -11,7 +11,7 @@ SECURITY_TRACKABLE = True
 DEBUG = True
 SITE_NAME = '18Wrestlers.com'
 SITE_TAG_LINE = 'Where blogging is a way of life'
-SITE_HEAD_IMAGE = ''
+SITE_HEAD_IMAGE = '18wrestlers_lg.png'
 # pagination
 POSTS_PER_PAGE = 5
 
