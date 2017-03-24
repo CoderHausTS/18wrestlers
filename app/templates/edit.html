@@ -1,0 +1,20 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="" method="post" name="edit" class="form">
+        <h2 class="form-heading">Edit Your Profile</h2>
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.nickname(size=24, class_="form-control", placeholder="Nickname") }}
+            {% for error in form.errors.nickname %}
+                <div class="alert alert-danger" role="alert">
+                    <span style="color: red;">[{{ error }}]</span>
+                </div>
+            {% endfor %}
+            {{ form.about_me( cols=32, rows=4, class_="form-control", placeholder="About Me") }}
+            <button type="submit" class="btn btn-lg btn-block btn-primary btn-default">Save Changes</button>
+        </div>
+    </form>
+
+{% endblock %}

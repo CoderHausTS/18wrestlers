@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+        <img src="{{ post.author.avatar(50) }}" class="post-avatar">
+        <div class="user">
+            {% if current_user.id == post.author.id %}
+            You
+            {% else %}
+            {{ post.author.nickname }}
+            {% endif %}
+        </div>
+        <div class="post-timestamp">{{ momentjs(post.timestamp).fromNow() }}</div>
+  </div>
+  <div class="panel-body">
+        <b>{{ post.body }}</b>
+  </div>
+    <div class="panel-footer">
+        {% if current_user.id == post.author.id %}
+            <div id="delete-post-link"><a href="{{ url_for('delete', id=post.id) }}">{{ ('Delete') }}</a></div>
+            <div id="edit-post-link">Edit</div>
+        {% endif %}
+
+        {% if (current_user.is_anonymous != True) %}
+            {% if not (current_user.is_following(post.author)) %}
+                <div id="follow-user-link"><a href="{{ url_for('follow', nickname=post.author.nickname) }}">{{ ('Follow') }}</a></div>
+            {% endif %}
+        {% endif %}
+
+    </div>
+</div>

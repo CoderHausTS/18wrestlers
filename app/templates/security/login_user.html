@@ -1,0 +1,22 @@
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+{% from "./custom_macros.html" import render_field_with_bootstrap_errors, render_checkbox %}
+
+{% extends "base.html" %}
+{% block content %}
+
+    <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form" class="form-signin">
+        <h2 class="form-signin-heading">Login</h2>
+          <div class="form-group">
+            {{ login_user_form.hidden_tag() }}
+                {{ render_field_with_bootstrap_errors(login_user_form.email, type="email", class_="form-control", placeholder="Email Address") }}
+                {{ render_field_with_bootstrap_errors(login_user_form.password, class_="form-control", placeholder="Password") }}
+              <div class="checkbox">
+                {{ render_checkbox(login_user_form.remember, type="checkbox", label="Remember Me") }}
+              </div>
+                {{ render_field(login_user_form.next) }}
+                {{ render_field(login_user_form.submit, class_="btn btn-lg btn-block btn-primary btn-default") }}
+          </div>
+    </form>
+
+
+{% endblock %}

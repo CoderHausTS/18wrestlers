@@ -1,0 +1,22 @@
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+{% from "./custom_macros.html" import render_field_with_bootstrap_errors %}
+
+{% extends "base.html" %}
+{% block content %}
+
+{% include "security/_messages.html" %}
+  <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form" class="form-signin">
+      <h2 class="form-signin-heading">Register</h2>
+        <div class="form-group">
+          {{ register_user_form.hidden_tag() }}
+                {{ render_field_with_bootstrap_errors(register_user_form.email, class_="form-control", placeholder="Email Address") }}
+                {{ render_field_with_bootstrap_errors(register_user_form.nickname, class_="form-control", placeholder="Nickname") }}
+                {{ render_field_with_bootstrap_errors(register_user_form.password, class_="form-control", placeholder="Password") }}
+                {% if register_user_form.password_confirm %}
+                  {{ render_field_with_bootstrap_errors(register_user_form.password_confirm, class_="form-control", placeholder="Confirm Password") }}
+                {% endif %}
+                {{ render_field(register_user_form.submit, class_="btn btn-lg btn-block btn-primary btn-default") }}
+          </div>
+  </form>
+
+{% endblock %}

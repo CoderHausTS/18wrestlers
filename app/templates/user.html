@@ -1,0 +1,50 @@
+<!-- extend our base layout -->
+
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <img src="{{ user.avatar(128) }}">
+    </div>
+    <div>
+        <h1>User: {{ user.nickname }}</h1>
+        {% if user.about_me %}{{ user.about_me }}{% endif %}
+        <br />
+        {% if user.current_login_at %}Currently on as of: {{ momentjs(user.current_login_at).calendar() }}
+            {% elif user.last_login_at %}Last seen on: {{ momentjs(user.last_login_at).calendar() }}{% endif %}
+        <br />
+        <div>
+            <p>{{ user.followers.count()-1 }} followers |
+                {% if user.id == current_user.id %}
+                    <a href="{{ url_for('edit') }}">Edit your profile</a>
+                {% elif not current_user.is_following(user) %}
+                    <a href="{{ url_for('follow', nickname=user.nickname) }}">Follow</a>
+                {% else %}
+                    <a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <hr>
+    {% for post in posts.items %}
+        {% include 'post.html' %}
+    {% endfor %}
+
+   <nav aria-label="...">
+      <ul class="pager">
+        {% if posts.has_prev %}
+            <li>
+                <a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">Newer posts</a>
+            </li>
+          {% else %}<li class="disabled"><a href="">Newer posts</a></li>
+        {% endif %}
+        {% if posts.has_next %}
+            <li>
+                <a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Older posts</a>
+            </li>
+          {% else %}<li class="disabled"><a href="">Older posts</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+{% endblock %}

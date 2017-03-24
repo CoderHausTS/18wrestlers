@@ -1,0 +1,25 @@
+.input-group-addon {
+    min-width:150px;
+    text-align:left;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.post-avatar {
+    margin: 0 30 0 0 auto;
+    float:left;
+}
+
+div#delete-post-link {
+    float:left;
+    margin: 0 10 0 0;
+}
+
+div#follow-user-link {
+    float:left;
+    margin: 0 10 0 0;
+}

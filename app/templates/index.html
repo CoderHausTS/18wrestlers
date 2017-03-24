@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron" id="index-head">
+    {% include 'jumbotron.html' %}
+</div>
+
+{% if user.is_anonymous != True %}
+    <form action="" method="post" class="form">
+        {{ form.csrf_token }}
+        <textarea rows="3" id="post" name="post" class="form-control" placeholder="Say something!"></textarea>
+        <button type="submit" class="btn btn-lg btn-block btn-primary btn-default" >Post!</button>
+        <div class="controls">
+            {% for error in form.post.errors %}
+                <div class="alert alert-danger" role="alert"><span style="color: red;">[{{ error }}]</span><br></div>
+            {% endfor %}
+        </div>
+    </form>
+{% endif %}
+
+{% for post in posts.items %}
+    {% include 'post.html' %}
+{% endfor %}
+
+<nav aria-label="Paginate">
+  <ul class="pager">
+    {% if posts.has_prev %}
+        <li>
+            <a href="{{ url_for('index', page=posts.prev_num) }}">Newer posts</a>
+        </li>
+      {% else %}<li class="disabled"><a href="">Newer posts</a></li>
+    {% endif %}
+    {% if posts.has_next %}
+        <li>
+            <a href="{{ url_for('index', page=posts.next_num) }}">Older posts</a>
+        </li>
+      {% else %}<li class="disabled"><a href="">Older posts</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% endblock %}
