@@ -26,6 +26,20 @@
         </div>
     </div>
     <hr>
+    {% if user.id == current_user.id %}
+        <form action="" method="post" class="form">
+            {{ form.csrf_token }}
+            <textarea rows="3" id="post" name="post" class="form-control" placeholder="Say something!"></textarea>
+            <div id="textarea_feedback"></div>
+            <button type="submit" class="btn btn-lg btn-block btn-primary btn-default" >Post!</button>
+            <div class="controls">
+                {% for error in form.post.errors %}
+                    <div class="alert alert-danger" role="alert"><span style="color: red;">[{{ error }}]</span><br></div>
+                {% endfor %}
+            </div>
+        </form>
+    {% endif %}
+    <hr>
     {% for post in posts.items %}
         {% include 'post.html' %}
     {% endfor %}
@@ -47,4 +61,17 @@
       </ul>
     </nav>
 
+    <script>
+        $(document).ready(function() {
+            var text_max = 1024;
+            $('#textarea_feedback').html(text_max + ' characters remaining');
+
+            $('textarea#post.form-control').keyup(function() {
+                var text_length = $('textarea#post.form-control').val().length;
+                var text_remaining = text_max - text_length;
+
+                $('#textarea_feedback').html(text_remaining + ' characters remaining');
+            });
+        });
+    </script>
 {% endblock %}

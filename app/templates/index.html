@@ -5,18 +5,7 @@
     {% include 'jumbotron.html' %}
 </div>
 
-{% if user.is_anonymous != True %}
-    <form action="" method="post" class="form">
-        {{ form.csrf_token }}
-        <textarea rows="3" id="post" name="post" class="form-control" placeholder="Say something!"></textarea>
-        <button type="submit" class="btn btn-lg btn-block btn-primary btn-default" >Post!</button>
-        <div class="controls">
-            {% for error in form.post.errors %}
-                <div class="alert alert-danger" role="alert"><span style="color: red;">[{{ error }}]</span><br></div>
-            {% endfor %}
-        </div>
-    </form>
-{% endif %}
+<!--removed form code-->
 
 {% for post in posts.items %}
     {% include 'post.html' %}

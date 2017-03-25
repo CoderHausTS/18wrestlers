@@ -16,48 +16,55 @@
 
     </head>
     <body>
-        <div class="container">
             <nav class="navbar navbar-default">
-                <div class="collapse navbar-collapse">
-
-
-                    <ul class="nav navbar-nav">
-                        <li class="navbar-header media-left">
-                            <a class="navbar-brand" href="{{ url_for('index') }}">
-                                <img id="small-logo" alt="Brand" src="/static/img/18wrestlers_lg.png">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('index') }}">Home</a>
-                        </li>
-                        <li class="divider-vertical"></li>
-                        {% if current_user.is_authenticated %}
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed"
+                                data-toggle="collapse" data-target="#navbar"
+                                aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="{{ url_for('index') }}">
+                            <img id="small-logo" alt="Brand" src="/static/img/18wrestlers_lg.png">
+                        </a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
                             <li>
-                                <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
+                                <a href="{{ url_for('index') }}">Home</a>
                             </li>
-                        {% endif %}
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
+                            <li class="divider-vertical"></li>
                             {% if current_user.is_authenticated %}
-                                <p class="navbar-text">Hello, {{ current_user.nickname }}
-                                <a href="{{ url_for_security('logout') }}">Logout</a></p>
-                            {% else %}
-                            <p class="navbar-text">Please
-                            {% if security.registerable %}
-                                <a href="{{ url_for_security('login') }}{% if 'next' in request.args %}
-                                    ?next={{ request.args.next|urlencode }}{% endif %}">Login</a>
-                                or <a href="{{ url_for_security('register') }}
-                                    {% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">
-                                        Register</a><br/>
+                                <li>
+                                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
+                                </li>
                             {% endif %}
-                                </p>
-                            {% endif %}
-                        </li>
-                    </ul>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                {% if current_user.is_authenticated %}
+                                    <p class="navbar-text">Hello, {{ current_user.nickname }}
+                                    <a href="{{ url_for_security('logout') }}">Logout</a></p>
+                                {% else %}
+                                <p class="navbar-text">Please
+                                {% if security.registerable %}
+                                    <a href="{{ url_for_security('login') }}{% if 'next' in request.args %}
+                                        ?next={{ request.args.next|urlencode }}{% endif %}">Login</a>
+                                    or <a href="{{ url_for_security('register') }}
+                                        {% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">
+                                            Register</a><br/>
+                                {% endif %}
+                                    </p>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
-        </div>
+
         <div class="container">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
