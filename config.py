@@ -8,6 +8,7 @@ WTF_CSRF_ENABLED = True
 SECRET_KEY = 'FR1I$D8(umE#C?qooa^a'
 SECURITY_REGISTERABLE = True
 SECURITY_TRACKABLE = True
+# SECURITY_POST_LOGIN_VIEW = url_for('user', nickname=nickname)
 DEBUG = True
 SITE_NAME = '18Wrestlers.com'
 SITE_TAG_LINE = 'Where blogging is a way of life'

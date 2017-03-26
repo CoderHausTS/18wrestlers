@@ -75,7 +75,7 @@ class Role(db.Model, RoleMixin):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(1024))
+    body = db.Column(db.String(8192))
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 

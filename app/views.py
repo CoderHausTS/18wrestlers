@@ -23,24 +23,13 @@ user_registered.connect(follow_me, app)
 def index(page=1):
     user = current_user
 
-    # form = PostForm(request.form)
-    # if request.method == 'POST' and form.validate():
-    #     post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=current_user)
-    #     db.session.add(post)
-    #     db.session.commit()
-    #     flash('Your post is now live!')
-    #     return redirect(url_for('index'))
-
     # if user.is_anonymous:
     posts = models.Post.get_all_posts().paginate(page, app.config['POSTS_PER_PAGE'], False)
-    # else:
-    #     posts = user.followed_posts().paginate(page, app.config['POSTS_PER_PAGE'], False)
 
     return render_template('index.html',
                            title='Home',
                            user=user,
                            posts=posts)
-                           # form=form)
 
 
 @app.route('/delete/<int:id>')
@@ -74,6 +63,7 @@ def user(nickname, page=1):
     #
     form = PostForm(request.form)
     if request.method == 'POST' and form.validate():
+        print(form.post)
         post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=current_user)
         db.session.add(post)
         db.session.commit()

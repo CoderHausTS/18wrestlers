@@ -1,3 +1,8 @@
+.clear {
+    clear:both;
+}
+
+
 .input-group-addon {
     min-width:150px;
     text-align:left;
@@ -39,5 +44,6 @@ div.panel-body {
 }
 
 textarea#post.form-control {
-    maxlength:1024;
+    maxlength:8192;
+    rows:10;
 }
