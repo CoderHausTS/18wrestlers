@@ -5,7 +5,8 @@
             {% if current_user.id == post.author.id %}
             You
             {% else %}
-            {{ post.author.nickname }}
+            <div id="user-link"><a href="{{ url_for('user', nickname=post.author.nickname) }}">{{ post.author.nickname }}</a></div>
+            <!--{{ post.author.nickname }}-->
             {% endif %}
         </div>
         <div class="post-timestamp">{{ momentjs(post.timestamp).fromNow() }}</div>
