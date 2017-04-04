@@ -3,16 +3,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div>
-        <img src="{{ user.avatar(128) }}">
-    </div>
-    <div>
-        <h1>User: {{ user.nickname }}</h1>
-        {% if user.about_me %}{{ user.about_me }}{% endif %}
-        <br />
-        {% if user.current_login_at %}Currently on as of: {{ momentjs(user.current_login_at).calendar() }}
-            {% elif user.last_login_at %}Last seen on: {{ momentjs(user.last_login_at).calendar() }}{% endif %}
-        <br />
+    <div class="well well-lg" id="profile-head">
+        <div>
+            <img class="profile-avatar" src="{{ user.avatar(128) }}">
+            <h1 class="profile-nickname">{{ user.nickname }}</h1>
+        </div>
+
+        <div>
+            {% if user.about_me %}{{ user.about_me }}{% endif %}
+            <br />
+            {% if user.current_login_at %}Currently on as of: {{ momentjs(user.current_login_at).calendar() }}
+                {% elif user.last_login_at %}Last seen on: {{ momentjs(user.last_login_at).calendar() }}{% endif %}
+            <br />
+        </div>
+
         <div>
             <p>{{ user.followers.count()-1 }} followers |
                 {% if user.id == current_user.id %}
@@ -25,22 +29,24 @@
             </p>
         </div>
     </div>
-    <hr>
-    {% if user.id == current_user.id %}
-        <form action="" method="post" class="form">
-            {{ form.csrf_token }}
-            <textarea rows="3" id="post" name="post" class="form-control" placeholder="Say something!"></textarea>
-            <div id="textarea_feedback"></div>
 
-            <button type="submit" class="btn btn-lg btn-block btn-primary btn-default" >Post!</button>
-            <div class="controls">
-                {% for error in form.post.errors %}
-                    <div class="alert alert-danger" role="alert"><span style="color: red;">[{{ error }}]</span><br></div>
-                {% endfor %}
-            </div>
-        </form>
+    {% if user.id == current_user.id %}
+        <div class="well well-lg" id="profile-post">
+            <form action="" method="post" class="form">
+                {{ form.csrf_token }}
+                <textarea rows="3" id="post" name="post" class="form-control" placeholder="Say something!"></textarea>
+                <div id="textarea_feedback"></div>
+
+                <button type="submit" class="btn btn-lg btn-block btn-primary btn-default" >Post!</button>
+                <div class="controls">
+                    {% for error in form.post.errors %}
+                        <div class="alert alert-danger" role="alert"><span style="color: red;">[{{ error }}]</span><br></div>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
     {% endif %}
-    <hr>
+
     {% for post in posts.items %}
         {% include 'post.html' %}
     {% endfor %}

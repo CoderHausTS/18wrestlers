@@ -1,15 +1,16 @@
 <div class="panel panel-default">
   <div class="panel-heading">
         <img src="{{ post.author.avatar(50) }}" class="post-avatar">
-        <div class="user">
+        <div class="post-user-info">
             {% if current_user.id == post.author.id %}
             You
             {% else %}
             <div id="user-link"><a href="{{ url_for('user', nickname=post.author.nickname) }}">{{ post.author.nickname }}</a></div>
             <!--{{ post.author.nickname }}-->
             {% endif %}
+            <div class="post-timestamp">{{ momentjs(post.timestamp).fromNow() }}</div>
         </div>
-        <div class="post-timestamp">{{ momentjs(post.timestamp).fromNow() }}</div>
+
   </div>
   <div class="panel-body">
         <b>{{ post.body }}</b>

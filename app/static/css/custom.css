@@ -16,7 +16,23 @@
 
 .post-avatar {
     margin: 0 30 0 0 auto;
-    float:left;
+    display: inline-block;
+}
+
+.post-user-info {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+img.profile-avatar {
+    margin: 0 10 0 0;
+    width: 128;
+    display: inline-block;
+}
+
+.profile-nickname {
+    display: inline-block;
+    vertical-align:bottom;
 }
 
 div#delete-post-link {
