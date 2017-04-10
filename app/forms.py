@@ -62,3 +62,12 @@ class EditForm(Form):
 
 class PostForm(Form):
     post = StringField('post', validators=[DataRequired()])
+
+
+class PostEditForm(Form):
+    body=TextAreaField('body', validators=[Length(min=0, max=8194)])
+
+    def __init__(self, form_data, original_body, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+        self.original_body = original_body
+        self.form_data = form_data

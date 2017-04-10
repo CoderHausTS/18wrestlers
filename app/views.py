@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_security import login_required, current_user, Security, SQLAlchemyUserDatastore, \
     user_registered, AnonymousUser
 from app import app, models, db
-from .forms import EditForm, PostForm, ExtendedRegisterForm
+from .forms import EditForm, PostForm, PostEditForm, ExtendedRegisterForm
 from datetime import datetime
 from .models import Post
 
@@ -143,6 +143,39 @@ def edit():
         form.about_me.data = current_user.about_me
     return render_template('edit.html', form=form)
 
+
+@app.route('/post/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def post_edit(id):
+
+    post = Post.query.get(id)
+
+    if post is None:
+        print('the post wasnt found')
+        flash('Post not found')
+        return redirect(url_for('index'))
+    if post.author.id != current_user.id:
+        flash('You cannot do that')
+        return redirect(url_for('index'))
+    # add actions here
+    form = PostEditForm(request.form, post.body)
+    if request.method == 'POST':
+
+        # our form data comes as a immutable object
+        # grab our new stuff and pop it, along with other current_user data
+        # into the database
+        post.body = request.form['body']
+        post.timestamp = datetime.utcnow()
+
+        db.session.add(post)
+        db.session.commit()
+        flash('Your changes have been saved')
+        return redirect(url_for('index'))
+    else:
+        # if we're just doing a get, grab the data from current_user
+        # print('this should just show the post')
+        form.body.data = post.body
+    return render_template('post_edit.html', form=form)
 
 
 @app.errorhandler(404)

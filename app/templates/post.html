@@ -18,6 +18,7 @@
     <div class="panel-footer">
         {% if current_user.id == post.author.id %}
             <div id="delete-post-link"><a href="{{ url_for('delete', id=post.id) }}">{{ ('Delete') }}</a></div>
+            <div id="edit-post-link"><a href="{{ url_for('post_edit', id=post.id) }}">{{ ('Edit Post') }}</a></div>
         {% endif %}
 
         {% if (current_user.is_anonymous != True) %}

@@ -1,0 +1,31 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="" method="post" name="post_edit" class="form">
+        <h2 class="form-heading">Edit Your Post</h2>
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.body(cols=32, rows=4, class_="form-control") }}
+            <div id="textarea_feedback"></div>
+
+            <button type="submit" class="btn btn-lg btn-block btn-primary btn-default">Save Changes</button>
+        </div>
+    </form>
+
+
+    <script>
+        $(document).ready(function() {
+            var text_max = 8192;
+            $('#textarea_feedback').html(text_max + ' characters remaining');
+
+            $('textarea#body.form-control').keyup(function() {
+                var text_length = $('textarea#body.form-control').val().length;
+                var text_remaining = text_max - text_length;
+
+                $('#textarea_feedback').html(text_remaining + ' characters remaining');
+            });
+        });
+    </script>
+
+{% endblock %}
