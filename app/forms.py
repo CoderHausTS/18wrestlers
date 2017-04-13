@@ -2,7 +2,7 @@ from wtforms import Form
 from wtforms import StringField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, ValidationError
 from flask_security.forms import RegisterForm
-from app import models
+from . import models
 
 
 class ExtendedRegisterForm(RegisterForm):

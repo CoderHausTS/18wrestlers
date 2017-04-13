@@ -1,7 +1,10 @@
-from app import db
+from . import app
+from flask_sqlalchemy import SQLAlchemy
 from flask_security import RoleMixin, UserMixin
 # for our gravatar image
 from hashlib import md5
+
+db = SQLAlchemy(app)
 
 #flask_security
 roles_users = db.Table('roles_users',
@@ -78,6 +81,15 @@ class Post(db.Model):
     body = db.Column(db.String(8192))
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def to_json(self):
+        json_post = {
+            'body': self.body,
+            'timestamp': self.timestamp,
+            'author': user_id
+        }
+        return json_post
+
 
     @staticmethod
     def get_all_posts():

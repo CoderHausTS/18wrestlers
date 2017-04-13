@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_security import login_required, current_user, Security, SQLAlchemyUserDatastore, \
     user_registered, AnonymousUser
 from app import app, models, db
+# from . import models, db
 from .forms import EditForm, PostForm, PostEditForm, ExtendedRegisterForm
 from datetime import datetime
 from .models import Post
