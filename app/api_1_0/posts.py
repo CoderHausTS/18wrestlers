@@ -1,4 +1,4 @@
-# from .. import db
+from flask import jsonify
 from ..models import Post
 from . import api
 

@@ -1,11 +1,12 @@
 from flask import Flask
 from flask_mail import Mail
-# from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from .logging_config import ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD
 from .momentjs import momentjs
-from .api_1_0 import api as api_1_0_blueprint
 
 mail = Mail()
+
+db = SQLAlchemy()
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -13,11 +14,19 @@ app.jinja_env.globals['momentjs'] = momentjs
 
 mail.init_app(app)
 
+# let's init down below instead
 # db = SQLAlchemy(app)
+
+db.init_app(app)
+
 
 #get our views and stuff
 from app import views
-# app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
+
+#  needed to move this import way down because of a circular ref.  Who knew?
+from .api_1_0 import api as api_1_0_blueprint
+app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
+
 
 # turn on debug logging to email and file if debug mode FALSE
 if not app.debug:

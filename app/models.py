@@ -1,10 +1,7 @@
-from . import app
-from flask_sqlalchemy import SQLAlchemy
+from . import db
 from flask_security import RoleMixin, UserMixin
 # for our gravatar image
 from hashlib import md5
-
-db = SQLAlchemy(app)
 
 #flask_security
 roles_users = db.Table('roles_users',
@@ -86,7 +83,7 @@ class Post(db.Model):
         json_post = {
             'body': self.body,
             'timestamp': self.timestamp,
-            'author': user_id
+            'author': self.user_id
         }
         return json_post
 
