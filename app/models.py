@@ -1,3 +1,4 @@
+from flask import url_for
 from . import db
 from flask_security import RoleMixin, UserMixin
 # for our gravatar image
@@ -65,6 +66,20 @@ class User(db.Model, UserMixin):
                                (followers.c.followed_id == Post.user_id)).filter(
             followers.c.follower_id == self.id).order_by(Post.timestamp.desc())
 
+    def to_json(self):
+        json_user = {
+            'url': url_for('api.get_user', id=self.id, _external=True),
+            'id': self.id,
+            'nickname': self.nickname,
+            'email': self.email,
+            # 'posts': self.posts,
+            'about_me': self.about_me,
+            'last_login_at': self.last_login_at,
+            'current_login_at': self.current_login_at
+            # 'followed': self.followed
+        }
+        return json_user
+
 
 # flask_security
 class Role(db.Model, RoleMixin):
@@ -81,9 +96,10 @@ class Post(db.Model):
 
     def to_json(self):
         json_post = {
+            'url': url_for('api.get_post', id=self.id, _external=True),
             'body': self.body,
             'timestamp': self.timestamp,
-            'author': self.user_id
+            'author': url_for('api.get_user', id=self.user_id, _external=True)
         }
         return json_post
 

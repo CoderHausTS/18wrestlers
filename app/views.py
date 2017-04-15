@@ -71,8 +71,6 @@ def user(nickname, page=1):
         return redirect(url_for('user', nickname=current_user.nickname))
 
     posts = user.followed_posts().paginate(page, app.config['POSTS_PER_PAGE'], False)
-    # posts = user.posts.order_by(Post.timestamp.desc())
-    # posts = posts.paginate(page, app.config['POSTS_PER_PAGE'], False)
 
     return render_template('user.html',
                            user=user,
