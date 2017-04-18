@@ -29,3 +29,8 @@ MAIL_PORT = 25
 MAIL_USERNAME = None
 MAIL_PASSWORD = None
 ADMINS = ['jason@18wrestlers.com']
+
+# feature toggles
+# api version toggles
+API_V1_TOGGLE = 1
+
