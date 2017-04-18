@@ -1,10 +1,11 @@
 from flask import jsonify
+from flask_security import auth_token_required
 from ..models import User
 from . import api
 
 
 @api.route('/users/<int:id>')
-# @auth.login_required
+@auth_token_required
 def get_user(id):
     user = User.query.get(id)
 
@@ -15,6 +16,7 @@ def get_user(id):
 
 
 @api.route('/users/posts/<int:id>')
+@auth_token_required
 def get_user_followed_posts(id):
     user = User.query.get(id)
     posts = user.followed_posts()

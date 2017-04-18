@@ -5,9 +5,12 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 WTF_CSRF_ENABLED = True
+
 SECRET_KEY = 'FR1I$D8(umE#C?qooa^a'
+SECURITY_PASSWORD_SALT = 'XGp@fBr)8,+m)y#q*Mx,^B-giWgs}_L^Y'
 SECURITY_REGISTERABLE = True
 SECURITY_TRACKABLE = True
+SECURITY_PASSWORD_HASH = 'pbkdf2_sha512'
 # SECURITY_POST_LOGIN_VIEW = url_for('user', nickname=nickname)
 DEBUG = True
 

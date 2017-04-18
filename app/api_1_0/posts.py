@@ -1,9 +1,11 @@
 from flask import jsonify
+from flask_security import auth_token_required
 from ..models import Post
 from . import api
 
 
 @api.route('/posts/')
+@auth_token_required
 # @login_required
 def get_posts():
     posts = Post.get_all_posts()
@@ -12,6 +14,7 @@ def get_posts():
 
 
 @api.route('/posts/<int:id>')
+@auth_token_required
 # @login_required
 def get_post(id):
     post = Post.query.get_or_404(id)
