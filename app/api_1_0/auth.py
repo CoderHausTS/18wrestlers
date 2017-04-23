@@ -1,29 +1,16 @@
-from flask import jsonify
+from flask import jsonify, request
 from flask_security import UserMixin, datastore, utils
-
-# only allow ananymous user
-# get user and validate they exist
-# get username and password from json, set user=("username":username, "password":password)
-#
-# do we use find_user which seems like it's for if you are already logged in    or
-# get_user(email)    self.user = _datastore.get_user(self.email.data)
-# from userdatastore? seems like we use get_user
-#
-# if they exist get password and validate passwords match
-# is_active
-# verify_and_update_password(password, user)
-# if the user exists, and the passwords atch, get token
-# get_auth_token
+from . import api
 
 
 # stolen from flask security.forms.loginform
-def validate(self, userlogin):
+def validate(self, email, password):
 
+    self.email = email
+    self.password = password
 
-    email = userlogin.email
-    password = userlogin.password
-
-    print("email")
+    print(self.email)
+    print(self.password)
 
     #  we need to strip if fro the incoming json
     if self.email.data.strip() == '':
@@ -55,3 +42,31 @@ def validate(self, userlogin):
         #self.email.errors.append(get_message('DISABLED_ACCOUNT')[0])
         return False
     return True
+
+
+@api.route('/auth/', methods=['POST'])
+def auth(self):
+
+    # only allow ananymous user
+    # get user and validate they exist
+    # get username and password from json, set user=("username":username, "password":password)
+    #
+    # do we use find_user which seems like it's for if you are already logged in    or
+    # get_user(email)    self.user = _datastore.get_user(self.email.data)
+    # from userdatastore? seems like we use get_user
+    #
+    # if they exist get password and validate passwords match
+    # is_active
+    # verify_and_update_password(password, user)
+    # if the user exists, and the passwords atch, get token
+    # get_auth_token
+
+    email = request.json.get('email')
+    password = request.json.get('password')
+
+    user_validated = validate(email, password)
+
+    if user_validated:
+        print("validated")
+    else:
+        print("not validated")
