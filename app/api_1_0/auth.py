@@ -5,6 +5,7 @@ from . import api
 from app import db
 
 
+
 #setup security dude
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
@@ -30,7 +31,6 @@ def verify_user(user, password):
     #
     return True
 
-
 @api.route('/auth/', methods=['POST'])
 def authenticator():
 
@@ -52,9 +52,20 @@ def authenticator():
     user = user_datastore.get_user(email)
 
     if verify_user(user, password):
-        output = user.get_auth_token()
+        output = {'Authentication-Token': user.get_auth_token()}
     else:
-        output = ''
+        output = {'errors':[{'message':'Bad Authentication Data', 'code':401}]}
 
-    return jsonify({'token': output})
+    return jsonify(output)
 
+# This is for later. We need to track our logins
+#  old_current_login, new_current_login = user.current_login_at, datetime.utcnow()
+# old_current_ip, new_current_ip = user.current_login_ip, remote_addr
+#
+# user.last_login_at = old_current_login or new_current_login
+# user.current_login_at = new_current_login
+# user.last_login_ip = old_current_ip or new_current_ip
+# user.current_login_ip = new_current_ip
+# user.login_count = user.login_count + 1 if user.login_count else 1
+#
+# _datastore.put(user)

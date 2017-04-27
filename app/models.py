@@ -69,13 +69,14 @@ class User(db.Model, UserMixin):
     def to_json(self):
         json_user = {
             'url': url_for('api.get_user', id=self.id, _external=True),
-            'id': self.id,
+            # 'id': self.id,
             'nickname': self.nickname,
-            'email': self.email,
+            # 'email': self.email,
             # 'posts': self.posts,
             'about_me': self.about_me,
             'last_login_at': self.last_login_at,
-            'current_login_at': self.current_login_at
+            'current_login_at': self.current_login_at,
+            'avatar': self.avatar(50)
             # 'followed': self.followed
         }
         return json_user
