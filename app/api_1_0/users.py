@@ -1,5 +1,5 @@
 from flask import jsonify
-from flask_security import auth_token_required
+from flask_security import auth_token_required, current_user
 from ..models import User
 from . import api
 
@@ -23,3 +23,13 @@ def get_user_followed_posts(id):
 
     return jsonify({'user': user.to_json()}, {'posts': [post.to_json() for post in posts]})
 
+
+@api.route('/users/follow/<int:id>')
+@auth_token_required
+def follow(id):
+
+    followed_user = User.query.get(id)
+
+    if not current_user.is_following(followed_user):
+        current_user.followed.append(followed_user)
+        return jsonify(current_user)
