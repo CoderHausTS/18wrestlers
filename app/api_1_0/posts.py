@@ -24,7 +24,7 @@ def get_post(id):
 
 
 #
-# user = current_user
+# post a post, it's the most!
 #
 @api.route('/posts/', methods=['POST'])
 @auth_token_required
@@ -36,3 +36,20 @@ def post():
         db.session.commit()
 
     return jsonify({'success': post.to_json()})
+
+
+@api.route('/posts/<int:id>', methods=['DELETE'])
+@auth_token_required
+def delete(id):
+    if request.method == 'DELETE':
+        post = Post.query.get(id)
+
+        if post is None:
+            return jsonify({'errors': [{'message': 'No Such post', 'code': 600}]})
+        if post.author.id != current_user.id:
+            return jsonify({'errors': [{'message': 'Unauthorized request', 'code': 600}]})
+
+        db.session.delete(post)
+        db.session.commit()
+
+        return jsonify({'status': [{'success': 'Post deleted', 'code': 200}]})
