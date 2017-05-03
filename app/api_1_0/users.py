@@ -25,7 +25,7 @@ def get_user_followed_posts(id):
     return jsonify({'user': user.to_json()}, {'posts': [post.to_json() for post in posts]})
 
 
-@api.route('/users/follow/<int:id>')
+@api.route('/users/follow/<int:id>', methods=['POST'])
 @auth_token_required
 def follow(id):
 
@@ -44,10 +44,10 @@ def follow(id):
     db.session.add(u)
     db.session.commit()
 
-    return jsonify({'success': 'Following ' + followed_user.nickname})
+    return jsonify({'success': followed_user.to_json()})
 
 
-@api.route('/users/unfollow/<int:id>')
+@api.route('/users/unfollow/<int:id>', methods=['POST'])
 @auth_token_required
 def unfollow(id):
     unfollowed_user = User.query.get(id)
@@ -65,4 +65,4 @@ def unfollow(id):
     db.session.add(u)
     db.session.commit()
 
-    return jsonify({'success': 'No longer following ' + unfollowed_user.nickname})
+    return jsonify({'success': 'No longer following' + unfollowed_user.nickname})
