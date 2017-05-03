@@ -2,6 +2,7 @@ from flask import jsonify
 from flask_security import auth_token_required, current_user
 from ..models import User
 from . import api
+from app import db
 
 
 @api.route('/users/<int:id>')
@@ -28,8 +29,40 @@ def get_user_followed_posts(id):
 @auth_token_required
 def follow(id):
 
-    followed_user = User.query.get(id)
+    followed_user = User.query.get(id)  # User.query.filter(User.nickname.ilike(nickname)).first()
 
-    if not current_user.is_following(followed_user):
-        current_user.followed.append(followed_user)
-        return jsonify(current_user)
+    if followed_user is None:
+        return jsonify({'errors':[{'message':'No Such User', 'code':600}]})
+    if followed_user == current_user:
+        return jsonify({'errors':[{'message':'Cannot Follow Yourself', 'code':600}]})
+
+    u = current_user.follow(followed_user)
+
+    if u is None:
+        return jsonify({'errors':[{'message':'Already following user', 'code':600}]})
+
+    db.session.add(u)
+    db.session.commit()
+
+    return jsonify({'success': 'Following ' + followed_user.nickname})
+
+
+@api.route('/users/unfollow/<int:id>')
+@auth_token_required
+def unfollow(id):
+    unfollowed_user = User.query.get(id)
+
+    if unfollowed_user is None:
+        return jsonify({'errors':[{'message':'No Such User', 'code':600}]})
+    if unfollowed_user == current_user:
+        return jsonify({'errors':[{'message':'Cannot unfollow Yourself', 'code':600}]})
+
+    u = current_user.unfollow(unfollowed_user)
+
+    if u is None:
+        return jsonify({'errors':[{'message':'Not following user', 'code':600}]})
+
+    db.session.add(u)
+    db.session.commit()
+
+    return jsonify({'success': 'No longer following ' + unfollowed_user.nickname})

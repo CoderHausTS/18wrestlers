@@ -5,7 +5,6 @@ from . import api
 
 
 @api.route('/posts/')
-@auth_token_required
 # @login_required
 def get_posts():
     posts = Post.get_all_posts()
