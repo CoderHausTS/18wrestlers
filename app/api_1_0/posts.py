@@ -14,7 +14,7 @@ def get_posts():
     return jsonify({'posts': [post.to_json() for post in posts]})
 
 
-@api.route('/posts/<int:id>')
+@api.route('/posts/<int:id>', methods=['GET'])
 @auth_token_required
 # @login_required
 def get_post(id):
@@ -53,3 +53,25 @@ def delete(id):
         db.session.commit()
 
         return jsonify({'status': [{'success': 'Post deleted', 'code': 200}]})
+
+
+@api.route('/posts/<int:id>', methods=['PATCH'])
+@auth_token_required
+def post_edit(id):
+
+    if request.method == 'PATCH':
+
+        post = Post.query.get(id)
+
+        if post is None:
+            return jsonify({'errors': [{'message': 'No Such post', 'code': 600}]})
+        if post.author.id != current_user.id:
+            return jsonify({'errors': [{'message': 'Unauthorized request', 'code': 600}]})
+
+        post.body = request.json.get('body')
+        post.timestamp = datetime.utcnow()
+
+        db.session.add(post)
+        db.session.commit()
+
+        return jsonify({'status': [{'success': 'Post edited', 'code': 200}]})
