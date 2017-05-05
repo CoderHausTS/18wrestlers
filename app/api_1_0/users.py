@@ -66,3 +66,14 @@ def unfollow(id):
     db.session.commit()
 
     return jsonify({'success': 'No longer following' + unfollowed_user.nickname})
+
+
+@api.route('/users/me/', methods=['get'])
+@auth_token_required
+def get_me():
+    user = current_user
+
+    if user is None:
+        return jsonify({'user': 'Not Found'})
+
+    return jsonify({'user': user.to_json()})
