@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_security import utils, SQLAlchemyUserDatastore
+from flask_security import utils, SQLAlchemyUserDatastore, UserMixin, auth_token_required, current_user
 from ..models import User, Role
 from . import api
 from app import db
@@ -51,10 +51,38 @@ def authenticator():
 
     user = user_datastore.get_user(email)
 
+    if user is None:
+        return jsonify({'errors': [{'message': 'No Such User', 'code': 600}]})
+
     if verify_user(user, password):
         output = {'Authentication-Token': user.get_auth_token()}
     else:
         output = {'errors':[{'message':'Bad Authentication Data', 'code':401}]}
+
+    return jsonify(output)
+
+
+@api.route('/auth/delegation/', methods=['POST'])
+@auth_token_required
+def refresh_token():
+
+    email = request.json.get('email')
+
+   #  we need to strip if fro the incoming json
+    if email.strip() == '':
+        # how are we going to send messages
+        # email.errors.append(get_message('EMAIL_NOT_PROVIDED')[0])
+        return False
+
+    user = user_datastore.get_user(email)
+
+    if user is None:
+        return jsonify({'errors': [{'message': 'No Such User', 'code': 600}]})
+
+    if user.email == current_user.email:
+        output = {'Authentication-Token': user.get_auth_token()}
+    else:
+        output = {'errors': [{'message': 'Bad Authentication Data', 'code': 401}]}
 
     return jsonify(output)
 
