@@ -6,6 +6,7 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 WTF_CSRF_ENABLED = True
 
+# do we need to shuffle these out to somewhere else?
 SECRET_KEY = 'FR1I$D8(umE#C?qooa^a'
 SECURITY_PASSWORD_SALT = 'XGp@fBr)8,+m)y#q*Mx,^B-giWgs}_L^Y'
 SECURITY_REGISTERABLE = True
