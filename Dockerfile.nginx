@@ -1,0 +1,16 @@
+# nginx
+
+FROM nginx
+MAINTAINER Jason Woods
+
+# the only thing we're serving directly from Nginx
+# is our static content, so bring it here 
+# the rest is coming from our gunicorn container
+RUN rm -R /usr/share/nginx/html/*
+COPY ./app/static /usr/share/nginx/html
+
+# Setup nginx
+COPY 18wrestlers.conf /etc/nginx/nginx.conf
+
+# Kick off NGINX
+# CMD /etc/init.d/nginx start 

@@ -1,0 +1,29 @@
+version: "3"
+services:
+  nginx:
+    container_name: 18wrestlers-nginx
+    image: 18wrestlers-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80"
+    networks:
+      - webnet 
+    links:
+      - gunicorn:gunicorn
+  gunicorn:
+    container_name: 18wrestlers-gunicorn
+    image: 18wrestlers-gunicorn
+    build:
+      context: .
+      dockerfile: Dockerfile.gunicorn
+    expose:
+      - "8000"
+    networks:
+      - webnet
+    volumes:
+      - ${PWD}/app.db:/deploy/app.db
+networks:
+  webnet:
+    driver: bridge

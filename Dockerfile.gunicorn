@@ -1,0 +1,33 @@
+# gunicorn flask
+
+FROM python:3.5
+MAINTAINER Jason Woods
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update
+RUN apt-get install -y gunicorn
+
+# Setup flask application
+RUN mkdir -p /deploy/app
+COPY app /deploy/app
+
+# configs will come from docker compose file now
+# we need config.py and instance/config.py
+#
+# Grab our configs
+COPY config.py /deploy/config.py
+RUN mkdir -p /deploy/instance
+COPY instance/config.py /deploy/instance/config.py
+
+# Set up our reqirements
+COPY requirements.txt /deploy
+RUN pip install -r /deploy/requirements.txt
+
+# we want to use the DB from the host
+# this will be done from the docker compose file
+# VOLUME app.db:/deploy/app.db
+
+# Start up gunicorn
+WORKDIR /deploy
+CMD gunicorn app:app -b :8000
