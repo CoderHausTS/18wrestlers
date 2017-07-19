@@ -24,6 +24,10 @@ COPY instance/config.py /deploy/instance/config.py
 COPY requirements.txt /deploy
 RUN pip install -r /deploy/requirements.txt
 
+# Need this directory to be good
+# if it's not here we get an error for the log
+RUN mkdir -p /deploy/tmp
+
 # we want to use the DB from the host
 # this will be done from the docker compose file
 # VOLUME app.db:/deploy/app.db

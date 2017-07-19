@@ -4,7 +4,6 @@ alembic
 defusedxml
 Flask_Migrate
 Mako
-pkg_resources
 sqlalchemy_migrate
 Babel
 Flask_WTF
