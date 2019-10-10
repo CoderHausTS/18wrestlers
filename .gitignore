@@ -5,6 +5,6 @@ flask/**
 app/__pycache__/*.pyc
 app/api_1_0/__pycache__/*.pyc
 __pycache__/*.pyc
-instance/**
+instance/config.py
 app.db
 
